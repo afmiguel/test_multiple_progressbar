@@ -2,8 +2,7 @@ use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use std::thread::sleep;
 use std::time::Duration;
 
-fn create_bars(num_bars: u64, total_steps: u64) -> Vec<ProgressBar> {
-    let multi_progress = MultiProgress::new();
+fn create_bars(multi_progress: &MultiProgress, num_bars: u64, total_steps: u64) -> Vec<ProgressBar> {
     let mut bars = Vec::with_capacity(num_bars as usize);
 
     for i in 0..num_bars {
@@ -22,7 +21,9 @@ fn create_bars(num_bars: u64, total_steps: u64) -> Vec<ProgressBar> {
 
 fn main() {
     const STEPS_PER_TASK: u64 = 60;
-    let bars = create_bars(2, STEPS_PER_TASK);
+
+    let multi_progress = MultiProgress::new();
+    let bars = create_bars(&multi_progress, 2, STEPS_PER_TASK);
 
     for i in 0..STEPS_PER_TASK {
         sleep(Duration::from_millis(100));
